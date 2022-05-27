@@ -42,7 +42,7 @@ class Contenedor {
 
 let products = new Contenedor('products.json')
 
-products.save( 'Remera', 2500, 'img' )
-products.save( 'pantalon', 2500, 'img' )
-products.save( 'GORRA', 2500, 'img' )
-products.save( 'jean', 2500, 'img' )
+// products.save( 'Remera', 2500, 'img' )
+// products.save( 'pantalon', 2500, 'img' )
+// products.save( 'GORRA', 2500, 'img' )
+// products.save( 'jean', 2500, 'img' )
