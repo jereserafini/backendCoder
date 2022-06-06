@@ -1,7 +1,5 @@
 const fs = require('fs')
 
-console.clear()
-
 class Contenedor {
 
     constructor( path ){
