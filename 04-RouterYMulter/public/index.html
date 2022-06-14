@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products</title>
+</head>
+<body>
+    <div>
+        <h1>Add product</h1>
+        <form action="/api/products" method="post">
+            Title: <input type="text" name="title">
+            Price: <input type="number" name="price">
+            Thumbnail: <input type="text" name="thumbnail">
+            <input type="submit" value="sumbit">
+        </form>
+    </div>
+    <!-- <div>
+        <h1>Update product</h1>
+        <form action="/api/products/:id" method="put">
+            ID: <input type="number" name="price">
+            Title: <input type="text" name="title">
+            Price: <input type="number" name="price">
+            Thumbnail: <input type="text" name="thumbnail">
+            <input type="submit" value="sumbit">
+        </form>
+    </div> -->
+</body>
+</html>
