@@ -68,8 +68,7 @@ route.put("/products/:id", (req, res) => {
             (prod.price = price),
             (prod.thumbnail = thumbnail);
         }
-      });
-  
+      });  
       res.json(products);
 
     } else {
