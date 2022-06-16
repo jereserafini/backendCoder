@@ -17,13 +17,9 @@ route.get("/products", (req, res) => {
 route.get("/products/:id", (req, res) => {
   try {
     const id = Number(req.params.id);
-  
-    if (products.find((prod) => prod.id === id)) {
-      const product = products.find((prod) => prod.id === id);
-      res.json(product);
-    } else {
-      res.json(`El producto con el id: ${id} no existe`);
-    }
+    const product = products.find((prod) => prod.id === id);
+    
+    (products.find((prod) => prod.id === id)) ? (res.json(product)) : (res.send(`El producto con el id: ${id} no existe`))
     
   } catch (error) {
     res
@@ -37,11 +33,7 @@ route.post("/products", (req, res) => {
     const { title, price, thumbnail } = req.body;
     let id;
   
-    if (products.length == 0) {
-      id = 1;
-    } else {
-      id = products[products.length - 1].id + 1;
-    }
+    (products.length == 0) ? (id = 1) : (id = products[products.length - 1].id + 1);
   
     products.push({ id, title, price, thumbnail });
   
@@ -58,22 +50,17 @@ route.post("/products", (req, res) => {
 route.put("/products/:id", (req, res) => {
   try {
     const id = Number(req.params.id);
+    const { title, price, thumbnail } = req.body;
   
-    if (products.find((prod) => prod.id === id)) {
-      const { title, price, thumbnail } = req.body;
-  
-      products.map((prod) => {
-        if (prod.id === id) {
-          (prod.title = title),
-            (prod.price = price),
-            (prod.thumbnail = thumbnail);
-        }
-      });  
-      res.json(products);
+    products.map((prod) => {
+      if (prod.id === id) {
+        (prod.title = title),
+          (prod.price = price),
+          (prod.thumbnail = thumbnail);
+      }
+    });
 
-    } else {
-      res.json(`El producto con el id: ${id} no existe`);
-    }
+    (products.find((prod) => prod.id === id)) ? (res.json(products)) : (res.send(`El producto con el id: ${id} no existe`))
 
   } catch (error) {
     res
@@ -85,14 +72,11 @@ route.put("/products/:id", (req, res) => {
 route.delete("/products/:id", (req, res) => {
   try {
     const id = Number(req.params.id);
+    const productDelete = products.find((prod) => prod.id === id)
+    products = products.filter((prod) => prod.id !== id);
 
-    if (products.find((prod) => prod.id === id)) {
-      products = products.filter((prod) => prod.id !== id);
+    (productDelete) ? (res.json(productDelete)) : (res.send(`El producto con el id: ${id} no existe`))
 
-      res.json(products);
-    } else {
-      res.json(`El producto con el id: ${id} no existe`);
-    }
   } catch (error) {
     res
       .status(error.statusCode ? error.statusCode : 500)
