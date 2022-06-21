@@ -36,7 +36,13 @@ routes.post("/", (req, res) => {
 
 routes.get("/products", (req, res) => {
   try {
-    res.render('listProducts', {products, hasAny: true})
+    let hasAny
+    if (products.length >0) {
+      hasAny = true
+    } else {
+      hasAny = false
+    }
+    res.render('listProducts', {products, hasAny})
   } catch (error) {
     res
     .status(error.statusCode ? error.statusCode : 500)

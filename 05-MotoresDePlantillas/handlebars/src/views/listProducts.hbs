@@ -1,25 +1,27 @@
 <h1 class="text-center" >Products</h1>
 
 <a href="/"><button>Back</button></a>
-<table class="table">
-  <thead>
-    <tr>
-      <th scope="col">ID</th>
-      <th scope="col">Product</th>
-      <th scope="col">price</th>
-      <th scope="col">Image</th>
-    </tr>
-  </thead>
-  <tbody>
     {{#if hasAny}}
-        {{#each products}}
+        <table class="table">
+        <thead>
             <tr>
-                <th scope="row">{{this.id}}</th>
-                <td>{{this.title}}</td>
-                <td>{{this.price}}</td>
-                <td><img src={{this.thumbnail}} width="20px"></td>
+            <th scope="col">ID</th>
+            <th scope="col">Product</th>
+            <th scope="col">price</th>
+            <th scope="col">Image</th>
             </tr>
-        {{/each}}
+        </thead>
+        <tbody>
+                {{#each products}}
+                    <tr>
+                        <th scope="row">{{this.id}}</th>
+                        <td>{{this.title}}</td>
+                        <td>{{this.price}}</td>
+                        <td><img src={{this.thumbnail}} width="20px"></td>
+                    </tr>
+                {{/each}}
+                {{else}}
+                <h2 class="mt-2">No products</h2>
+        </tbody>
+        </table>
     {{/if}}
-  </tbody>
-</table>
