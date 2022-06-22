@@ -1,0 +1,31 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(http-equiv="X-UA-Compatible", content="IE=edge")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        Link(href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous")
+        title My App
+    body(class="container")
+        h1 Products
+        a(href="/")
+            button Back
+        if hasAny
+            table( class="table" )
+                thead
+                    tr
+                        th(scope="col") ID
+                        th(scope="col") Product
+                        th(scope="col") Price
+                        th(scope="col") Image
+                tbody
+                    each prod in products
+                        tr 
+                            th( scope="row" )=prod.id
+                            td=prod.title
+                            td=prod.price
+                            td
+                                img(src=prod.thumbnail, width="20px")
+        else
+            h2(class="mt-2") No products
+            
