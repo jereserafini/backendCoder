@@ -33,10 +33,10 @@ class ContainerProducts {
         try {
             const id = uuidv4()
             const timestamp = Date().toLocaleString("fr-FR")
-            console.log(timestamp);
+
             let products = JSON.parse(await fs.promises.readFile( this.path, 'utf-8' ))
 
-            products.push({ id, title, price, url, code, description, stock })
+            products.push({ id, title, timestamp, price, url, code, description, stock })
 
             await fs.promises.writeFile( this.path, JSON.stringify(products) )
 
