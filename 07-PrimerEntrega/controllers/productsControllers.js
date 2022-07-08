@@ -36,6 +36,9 @@ const postProducts = async ( req = request, res = response) => {
         if (title !== '' && price !== '' && url !== '' && code !== '' && description !== '' && stock !== '') {
 
             products.save({ title, price, url, code, description, stock })
+
+            res.json({"message": "Producto agregado correctamente"})
+
             
         } else {
             console.log('Complete all camps')
@@ -70,6 +73,9 @@ const deleteProducts = async ( req = request, res = response ) => {
         const {id} = req.params;
 
         products.deleteById(id)
+
+        res.json({"message": "Producto eliminado correctamente"})
+
 
     } catch (error) {
         res

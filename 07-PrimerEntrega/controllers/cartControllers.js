@@ -22,7 +22,9 @@ const deleteCart = async ( req = request, res = response ) => {
     try {
         const {id} = req.params;
         
-        cart.deleteById(id)
+        await cart.deleteById(id)
+
+        res.json({"message": "Carrito eliminado correctamente"})
         
     } catch (error) {
         res
@@ -46,15 +48,44 @@ const getCart = async ( req = request, res = response ) => {
 
 //Agrega productos al carrito por su id
 const postProductCart = async ( req = request, res = response ) => {
+    try {
+        const {id} = req.params;
 
-    
+        const { title, price, url, code, description, stock } = req.body;
 
+        if (title !== '' && price !== '' && url !== '' && code !== '' && description !== '' && stock !== '') {
+
+            await cart.postProdCart({ id, title, price, url, code, description, stock })
+            
+            res.json({"message": "Producto agregado correctamente"})
+
+
+        } else {
+            console.log('Complete all camps')
+        }
+    } catch (error) {
+        res
+        .status(error.statusCode ? error.statusCode : 500)
+        .json({ error: error.message });
+    }
 }
 
 //Elimina un producto por el id del carrito y del producto
 const deleteProductCart = async ( req = request, res = response ) => {
 
-    
+    try {
+        const {id, id_prod} = req.params;
+        
+        await cart.deleteProdCart(id, id_prod)
+
+        res.json({"message": "Producto eliminado correctamente"})
+
+        
+    } catch (error) {
+        res
+        .status(error.statusCode ? error.statusCode : 500)
+        .json({ error: error.message });
+    }
 
 }
 
