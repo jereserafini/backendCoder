@@ -53,9 +53,9 @@ const putProducts = async ( req = request, res = response ) => {
 
         const { title, price, url, code, description, stock } = req.body;
 
-        ProductDao.updateProduct({ id, title, price, url, code, description, stock })
+        await ProductDao.updateProduct({ id, title, price, url, code, description, stock })
     
-        res.json(await ProductDao.getAll())
+        res.json(await ProductDao.getAllProducts())
     
       } catch (error) {
         res

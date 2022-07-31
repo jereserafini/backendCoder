@@ -18,7 +18,7 @@ class MongoContainer{
             const products = await this.collection.find({})
             return products
         } catch (error) {
-            console.log(`Error metodo "getAll": ${error}`);
+            console.log(`Error metodo "getAllProducts": ${error}`);
         }
     }
     
@@ -30,7 +30,7 @@ class MongoContainer{
             return product
             
         } catch (error) {
-            console.log(`Error metodo "getById": ${error}`);
+            console.log(`Error metodo "getProductById": ${error}`);
         }
     }
 
@@ -41,17 +41,19 @@ class MongoContainer{
 
             const product = await this.collection.insertMany({title, price, url, code, description, stock, timestamp})
 
+            console.log('Producto guardado correctamente')
+
             return product[0]._id
             
         } catch (error) {
-            console.log(`Error metodo "save": ${error}`);
+            console.log(`Error metodo "saveProduct": ${error}`);
         }
     }
 
     //Actualiza un producto
     async updateProduct({ id, title, price, url, code, description, stock }){
         try {
-            const product = await this.collection.updateOne({"__id": id},{
+            const product = await this.collection.updateOne({"_id": id},{
                 $set: {
                     title,
                     price,
@@ -65,21 +67,23 @@ class MongoContainer{
             console.log('Producto actualizado correctamente')
 
             return product
+
         } catch (error) {
-            console.log(`Error metodo "deleteById": ${error}`);
+            console.log(`Error metodo "updateProduct": ${error}`);
         }
     }
 
     //Elimina un producto por su id
     async deleteProductById(id){
         try {
-            const product = await this.collection.deleteOne({"__id": id})
+            const product = await this.collection.deleteOne({"_id": id})
 
-            console.log('Producto eliminado correctamente', product)
-            
-            return products
+            console.log('Producto eliminado correctamente')
+
+            return product
+
         } catch (error) {
-            console.log(`Error metodo "deleteById": ${error}`);
+            console.log(`Error metodo "deleteProductById": ${error}`);
         }
     }
 
@@ -91,89 +95,79 @@ class MongoContainer{
         try {
             const timestamp = Date().toLocaleString("fr-FR")
 
-            const carts = JSON.parse(await fs.promises.readFile( this.path, 'utf-8' ))
+            const products = await mongoose.model('products').find({}, {__v: 0})
 
-            const products = JSON.parse(await fs.promises.readFile( 'database/products.json', 'utf-8' ))
+            const cart = await this.collection.insertMany({timestamp, products})
 
-            carts.push({ id, timestamp, products })
-            
-            await fs.promises.writeFile( this.path, JSON.stringify(carts) )
-            
-            console.log('Cart guardado exitosamente', id);
+            console.log('Cart creado correctamente')
 
-            return id
+            return cart
             
         } catch (error) {
-            console.log(`Error metodo "save": ${error}`);
+            console.log(`Error metodo "saveCart": ${error}`);
         }
     }
 
     //Elimina carrito
     async deleteCartById(id){
         try {
-            let carts = JSON.parse(await fs.promises.readFile( this.path, 'utf-8' ))
+            const cart = await this.collection.deleteOne({"_id": id})
 
-            carts = carts.filter(cart => cart.id !== id)
+            console.log('Cart eliminado correctamente')
 
-            await fs.promises.writeFile( this.path, JSON.stringify(carts) )
-
-            console.log('Cart eliminado correctamente', carts)
+            return cart
 
         } catch (error) {
-            console.log(`Error metodo "deleteById": ${error}`);
+            console.log(`Error metodo "deleteCartById": ${error}`);
         }
     }
 
     //Lista todos los productos de un carrito por su id
-    async getAllProductsCart(id){        
+    async getAllProductsCart(id){
         try {
-            
-            const carts = JSON.parse(await fs.promises.readFile( this.path, 'utf-8' ))
-
-            const cart = carts.find( x => x.id == id )
+            const cart = await this.collection.findById(id)
 
             const products = cart.products
 
             return products
         } catch (error) {
-            console.log(`Error metodo "getAll": ${error}`);
+            console.log(`Error metodo "getAllProductsCart": ${error}`);
         }
     }
+
+    //------------------NO TENGO IDEA DE COMO HACER---------------------
 
     //Agrega productos al carrito por su id
-        async postProdCart({ id, title, price, url, code, description, stock }){
-        try {
-            const carts = JSON.parse(await fs.promises.readFile( this.path, 'utf-8' ))
-            const idProd = uuidv4()
-            const timestamp = Date().toLocaleString("fr-FR")
-            carts.map((cart) => {
-                if (cart.id === id) {
-                    cart.products.push({ id: idProd, title, timestamp, price, url, code, description, stock })
-                }
-            });
+    //     async postProdCart({ id, title, price, url, code, description, stock }){
+    //     try {
 
-            await fs.promises.writeFile( this.path, JSON.stringify(carts) )
+    //         const cart = await this.collection.findById(id)
 
-            console.log('Producto agregado al carrito correctamente')
+    //         const timestamp = Date().toLocaleString("fr-FR")
 
-        } catch (error) {
-            console.log(`Error metodo "postProdCart": ${error}`);
-        }
-    }
+    //         const product = await this.collection.insertMany({ id: ObjectId(), title, price, url, code, description, stock, timestamp})
+
+    //         const carts = JSON.parse(await fs.promises.readFile( this.path, 'utf-8' ))
+
+
+    //         console.log('Producto agregado al carrito correctamente')
+
+    //     } catch (error) {
+    //         console.log(`Error metodo "postProdCart": ${error}`);
+    //     }
+    // }
     
 
     //Elimina un producto por el id del carrito y del producto
     async deleteProdCart(id, id_prod){
         try {
-            let carts = JSON.parse(await fs.promises.readFile( this.path, 'utf-8' ))
+            const cart = await this.collection.findById(id)
 
-            carts.map((cart) => {
-                if (cart.id === id) {
-                    cart.products = cart.products.filter(prod => prod.id !== id_prod)
-                }
-            });
+            const prodFilter = cart.products.filter(prod => prod._id != id_prod)
 
-            await fs.promises.writeFile( this.path, JSON.stringify(carts) )
+            await this.collection.updateOne({"_id": id},{
+                $set: { products: prodFilter }
+            })
 
             console.log('Producto eliminado correctamente')
 
