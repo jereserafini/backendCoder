@@ -5,6 +5,14 @@ const socket = io()
 const messagesForm = document.querySelector('#messagesForm')
 const messagesPool = document.querySelector('#messagesPool')
 const emailInput = document.querySelector('#emailInput')
+
+const firstNameInput = document.querySelector('#nameInput')
+const lastNameInput = document.querySelector('#lastNameInput')
+const yearsInput = document.querySelector('#yearsOldInput')
+const nickInput = document.querySelector('#nickInput')
+const avatarInput = document.querySelector('#avatarInput')
+
+
 const messageInput = document.querySelector('#messageInput')
 
 //Products
@@ -15,7 +23,6 @@ const thumbnailInput = document.querySelector('#thumbnailInput')
 
 
 //Functions
-
 
 //Products
 const sendProduct = (product) => {
@@ -62,9 +69,16 @@ const handleSumbitMsg = (event) => {
     const date = new Date();
     
     const messageInfo = {
-        email: emailInput.value,
-        message: messageInput.value,
-        date: date.toLocaleString("fr-FR")
+        author: {
+            id: emailInput.value,
+            name: firstNameInput.value,
+            lastName: lastNameInput.value,
+            years: yearsInput.value,
+            nick: nickInput.value,
+            avatar: avatarInput.value
+        },
+        date: date.toLocaleString("fr-FR"),
+        text: messageInput.value
     }
     
     sendMessage(messageInfo)

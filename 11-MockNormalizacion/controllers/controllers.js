@@ -1,7 +1,7 @@
 import { request, response } from "express";
 import { faker } from '@faker-js/faker';
 
-const getProducts = ( req = request, res = response ) => {
+const getProductsTest = ( req = request, res = response ) => {
     try {
         const products = []
 
@@ -26,4 +26,4 @@ const getProducts = ( req = request, res = response ) => {
     }
 }
 
-export default getProducts
+export default getProductsTest
