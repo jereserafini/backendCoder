@@ -3,14 +3,17 @@ dotenv.config();
 
 let ProductDao
 let CartDao
+let UserDao
 
 switch (process.env.DATABASE) {
     case "mongo":
         const { default: ProductDaoMongo } = await import('./mongo/ProductDaoMongo.js')
         const { default: CartDaoMongo } = await import('./mongo/CartDaoMongo.js')
+        const { default: UserDaoMongo } = await import ('./mongo/UserDaoMongo.js')
 
         ProductDao = new ProductDaoMongo()
         CartDao = new CartDaoMongo()
+        UserDao = new UserDaoMongo()
     break;
 
     case "firebase":
@@ -22,4 +25,4 @@ switch (process.env.DATABASE) {
     break;
 }
 
-export { ProductDao, CartDao }
+export { ProductDao, CartDao, UserDao }
